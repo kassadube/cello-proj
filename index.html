@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vue.js Tutorial | API Example</title>
+
+    <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .bg-1 {background-color: #C4313B; color: #ffffff;}
+    h1{margin:0px;}
+    .H50{height:70px;}
+    .PT10{padding-top:10px}
+    .PT3{padding-top:5px}
+    .brd{border:1px solid grey}
+    
+</style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+        <div class="row bg-1 ">
+          <div class="col-md-6 col-md-offset-3 H50 ">
+              <h1 class="text-center PT10">Supported Vehicle Data base</h1>
+            </div> 
+        </div>
+        <div class="row bg-1 ">
+              <div class="col-xs-1 brd"> <p class="text-center PT3"> Version:</p></div> 
+              <div class="col-xs-3 brd"> <p class="text-center PT3"> DB last updated:</p></div>  
+              <div class="col-xs-4 brd"> <p class="text-center PT3"> total numbers of vehicles in DB:</p></div>  
+              <div class="col-xs-3 brd"> <p class="text-center PT3"> Sampling Request Form:</p></div>
+              <div class="col-xs-1 brd"> <p class="text-center PT3"> Info:</p></div>                
+        </div> 
+      </div> 
+    </div> <!-- end of #app -->
+  </body>
+
+  <script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        startingZip: '',
+        startingCity: '',
+        endingZip: '',
+        endingCity: ''
+      },
+      watch: {
+        startingZip: function() {
+          this.startingCity = ''
+          if (this.startingZip.length == 5) {
+            this.lookupStartingZip()
+          }
+        },
+        endingZip: function() {
+          this.endingCity = ''
+          if (this.endingZip.length == 5) {
+            this.lookupEndingZip()
+          }
+        }
+      },
+      methods: {
+        lookupStartingZip: _.debounce(function() {
+          var app = this
+          app.startingCity = "Searching..."
+          axios.get('http://ziptasticapi.com/' + app.startingZip)
+                .then(function (response) {
+                  app.startingCity = response.data.city + ', ' + response.data.state
+                })
+                .catch(function (error) {
+                  app.startingCity = "Invalid Zipcode"
+                })
+        }, 500),
+        lookupEndingZip: _.debounce(function() {
+          var app = this
+          app.endingCity = "Searching..."
+          axios.get('http://ziptasticapi.com/' + app.endingZip)
+                .then(function (response) {
+                  app.endingCity = response.data.city + ', ' + response.data.state
+                })
+                .catch(function (error) {
+                  app.endingCity = "Invalid Zipcode"
+                })
+        }, 500)
+      }
+    })
+  </script>
+</html>
