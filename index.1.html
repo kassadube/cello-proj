@@ -17,7 +17,11 @@
     .PT10{padding-top:10px}
     .PT3{padding-top:5px}
     .brd{border:1px solid grey}
-    
+    .row-no-padding >[class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  
+    }
 </style>
   </head>
 
@@ -29,10 +33,10 @@
               <h1 class="text-center PT10">Supported Vehicle Data base</h1>
             </div> 
         </div>
-        <div class="row bg-1 ">
+        <div class="row bg-1 row-no-padding">
               <div class="col-xs-4 brd">
-                <div class="col-xs-4 brd"> <span class="text-center PT3"> Version:</span> <span>{{version}}</span></div> 
-                <div class="col-xs-8 brd"> <p class="text-center PT3"> DB last updated:</p></div>  
+                <div class="col-xs-5 brd"> <span class="text-center PT3"> Version:</span> <span>{{version}}</span></div> 
+                <div class="col-xs-7 brd"> <p class="text-center PT3"> DB last updated:</p></div>  
               </div>
               <div class="col-xs-4 brd"> <p class="text-center PT3"> total numbers of vehicles in DB:</p></div>  
               <div class="col-xs-3 brd"> <p class="text-center PT3"> Sampling Request Form:</p></div>
