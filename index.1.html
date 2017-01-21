@@ -30,8 +30,10 @@
             </div> 
         </div>
         <div class="row bg-1 ">
-              <div class="col-xs-1 brd"> <p class="text-center PT3"> Version:</p></div> 
-              <div class="col-xs-3 brd"> <p class="text-center PT3"> DB last updated:</p></div>  
+              <div class="col-xs-4 brd">
+                <div class="col-xs-4 brd"> <span class="text-center PT3"> Version:</span> <span>{{version}}</span></div> 
+                <div class="col-xs-8 brd"> <p class="text-center PT3"> DB last updated:</p></div>  
+              </div>
               <div class="col-xs-4 brd"> <p class="text-center PT3"> total numbers of vehicles in DB:</p></div>  
               <div class="col-xs-3 brd"> <p class="text-center PT3"> Sampling Request Form:</p></div>
               <div class="col-xs-1 brd"> <p class="text-center PT3"> Info:</p></div>                
@@ -45,52 +47,11 @@
   <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
 
   <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        startingZip: '',
-        startingCity: '',
-        endingZip: '',
-        endingCity: ''
-      },
-      watch: {
-        startingZip: function() {
-          this.startingCity = ''
-          if (this.startingZip.length == 5) {
-            this.lookupStartingZip()
-          }
-        },
-        endingZip: function() {
-          this.endingCity = ''
-          if (this.endingZip.length == 5) {
-            this.lookupEndingZip()
-          }
-        }
-      },
-      methods: {
-        lookupStartingZip: _.debounce(function() {
-          var app = this
-          app.startingCity = "Searching..."
-          axios.get('http://ziptasticapi.com/' + app.startingZip)
-                .then(function (response) {
-                  app.startingCity = response.data.city + ', ' + response.data.state
-                })
-                .catch(function (error) {
-                  app.startingCity = "Invalid Zipcode"
-                })
-        }, 500),
-        lookupEndingZip: _.debounce(function() {
-          var app = this
-          app.endingCity = "Searching..."
-          axios.get('http://ziptasticapi.com/' + app.endingZip)
-                .then(function (response) {
-                  app.endingCity = response.data.city + ', ' + response.data.state
-                })
-                .catch(function (error) {
-                  app.endingCity = "Invalid Zipcode"
-                })
-        }, 500)
-      }
-    })
+  var vm = new Vue({
+     el:"#app",
+     data:{
+       version:"1.1.1"
+     }
+   })
   </script>
 </html>
