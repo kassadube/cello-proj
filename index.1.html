@@ -1,61 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vue.js Tutorial | API Example</title>
 
-    <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vue.js Tutorial | API Example</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
     .bg-1 {background-color: #C4313B; color: #ffffff;}
-    h1{margin:0px;}
+     h1{margin:0px;}
     .H50{height:70px;}
     .PT10{padding-top:10px}
     .PT3{padding-top:5px}
-    .brd{border:1px solid grey}
+    .brd{border-top:1px solid grey}
     .row-no-padding >[class*="col-"] {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  
-    }
+      padding-left: 0 !important;
+      padding-right: 0 !important;  
+      }
+    .row span{line-height:30px}
 </style>
-  </head>
+</head>
 
-  <body>
-    <div id="app">
-      <div class="container-fluid">
-        <div class="row bg-1 ">
-          <div class="col-md-6 col-md-offset-3 H50 ">
-              <h1 class="text-center PT10">Supported Vehicle Data base</h1>
-            </div> 
+<body>
+  <div id="app">
+    <div class="container-fluid">
+      <div class="row bg-1 ">
+        <div class="col-md-6 col-md-offset-3 H50 ">
+          <h1 class="text-center PT10">Supported Vehicle Data base</h1>
         </div>
-        <div class="row bg-1 row-no-padding">
-              <div class="col-xs-4 brd">
-                <div class="col-xs-5 brd"> <span class="text-center PT3"> Version:</span> <span>{{version}}</span></div> 
-                <div class="col-xs-7 brd"> <p class="text-center PT3"> DB last updated:</p></div>  
-              </div>
-              <div class="col-xs-4 brd"> <p class="text-center PT3"> total numbers of vehicles in DB:</p></div>  
-              <div class="col-xs-3 brd"> <p class="text-center PT3"> Sampling Request Form:</p></div>
-              <div class="col-xs-1 brd"> <p class="text-center PT3"> Info:</p></div>                
-        </div> 
-      </div> 
-    </div> <!-- end of #app -->
-  </body>
+      </div>
+      <div class="row bg-1 row-no-padding">
+        <div class="col-xs-4 ">
+          <div class="col-xs-5 brd text-center"> <span class="PT3"> Version:</span> <span>{{initialData.version}}</span></div>
+          <div class="col-xs-7 brd text-center"> <span class="text-center PT3"> DB last updated:</span> <span>{{initialData.lastDBUpdate}}</span></div>
+        </div>
+        <div class="col-xs-4 brd text-center">
+          <span class="text-center PT3">total numbers of vehicles in DB:</span> <span>{{initialData.numOfVehicles}}</span>
+        </div>
+        <div class="col-xs-3 brd text-center">
+          <p class="text-center PT3"> Sampling Request Form:</p>
+        </div>
+        <div class="col-xs-1 brd">
+          <p class="text-center PT3"> Info:</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of #app -->
+</body>
 
-  <script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+<script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
+<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 
-  <script>
-  var vm = new Vue({
-     el:"#app",
-     data:{
-       version:"1.1.1"
-     }
-   })
+<script>
+    var getDataURL = "http://194.90.199.243/reactmvc/home/TestData";
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        initialData: {
+          version: "1.1.1",
+          lastDBUpdate: moment(new Date()).format("DD/MM/YYYY"),
+          numOfVehicles: 0
+        }
+
+      },
+      beforeCreate: function () {
+
+        console.log("beforeCreate");
+      },
+      created: function () {
+        this.initData();
+        console.log("created");
+      },
+      methods: {
+        initData: function () {
+          var self = this;
+          axios.get(getDataURL)
+            .then(function (response) {
+              response.data.lastDBUpdate = moment(response.data.lastDBUpdate).format("DD/MM/YYYY");
+              self.initialData = response.data;
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+        }
+      }
+
+    })
   </script>
+
 </html>
