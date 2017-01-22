@@ -58,7 +58,7 @@
         <div class="row H350"></div>
         <div class="row">
             <div class="col-md-8 col-md-offset-2 H50 ">
-                <ajax-form id="formOne" class="form-inline" name="my-form" action="http://localhost/reactMVC/home/SubmitTest" method="post" v-on:bbb="fff" >
+                <form class="form-inline">
                   <div class="form-group">
                     <input type="text" class="form-control" id="brand" placeholder="Brand">
                   </div>
@@ -72,11 +72,21 @@
                      <input type="text" class="form-control" id="manufactureYear" placeholder="Manufacture Year">
                   </div>                  
                   <button type="submit" class="btn btn-danger">SEARCH</button>
-                </ajax-form>
+                </form>
             </div>
         </div>
-        
+        <div class="row">
+           <form id="formOne" class="my-form" name="myCoolForm" action="http://localhost/reactMVC/home/SubmitTest" method="post" >
+                <label for="file">Profile Image</label>
+                <input type="file" name="file" id="file" multiple>
+                <div class="clearfix"></div>
+                <input type="submit" name="submit" value="Submit">
+           </form>
+        </div>
     </div>
+    <my-component>
+      <div>ddd</div>
+    </my-component>
   </div>
   <!-- end of #app -->
 </body>
@@ -88,35 +98,7 @@
 
 <script>
     var getDataURL = "http://194.90.199.243/reactmvc/home/TestData";
-
-var AjaxFormComponent = {
-  template: '<form :id="id" v-on:submit.prevent="handleAjaxFormSubmit"><slot></slot></form>',
-  props: {
-    name: String,
-    id: String,
-    class: String,
-    action: String
-    },      
- 
-
-  methods: {
-    handleAjaxFormSubmit : function()
-    {
-        console.log('ddd');
-        this.bbb();
-    },
-    bbb: function()
-    {
-      console.log('bbb');
-        this.$emit('bbb');
-    }
-  }
-};
-
-
-
-// register
-var ajaxForm = Vue.component('ajax-form', AjaxFormComponent);
+   
 
     var vm = new Vue({
       el: "#app",
@@ -147,17 +129,19 @@ var ajaxForm = Vue.component('ajax-form', AjaxFormComponent);
             .catch(function (error) {
               console.log(error);
             })
-        },
-        fff: function(){
-          console.log('fff');
         }
-
       }
 
     });
 
 
     
+ Vue.component('my-component', {
+  template: '<div>fff<slot></slot></div>'
+})
+
+
+
 
   </script>
 
