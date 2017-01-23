@@ -60,16 +60,16 @@
             <div class="col-md-8 col-md-offset-2 H50 ">
                 <ajax-form id="formOne" class="form-inline" name="my-form" action="http://localhost/reactMVC/home/SubmitTest" method="post" v-on:bbb="fff" >
                   <div class="form-group">
-                    <input type="text" class="form-control" id="brand" placeholder="Brand">
+                    <input type="text" class="form-control" name="brand" id="brand" placeholder="Brand">
                   </div>
                   <div class="form-group">
-                     <input type="text" class="form-control" id="model" placeholder="Model">
+                     <input type="text" class="form-control" name="model" id="model" placeholder="Model">
                   </div>
                   <div class="form-group">
-                     <input type="text" class="form-control" id="engineType" placeholder="Engine Type">
+                     <input type="text" class="form-control" name="engineType" id="engineType" placeholder="Engine Type">
                   </div>
                   <div class="form-group">
-                     <input type="text" class="form-control" id="manufactureYear" placeholder="Manufacture Year">
+                     <input type="text" class="form-control" name="manufactureYear" id="manufactureYear" placeholder="Manufacture Year">
                   </div>                  
                   <button type="submit" class="btn btn-danger">SEARCH</button>
                 </ajax-form>
@@ -87,7 +87,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 
 <script>
-    var getDataURL = "http://194.90.199.243/reactmvc/home/TestData";
+   // var getDataURL = "http://194.90.199.243/reactmvc/home/TestData";
+    var getDataURL = "http://207.232.46.92/reactmvc/home/TestData";
 
 var AjaxFormComponent = {
   template: '<form :id="id" v-on:submit.prevent="handleAjaxFormSubmit"><slot></slot></form>',
@@ -102,6 +103,8 @@ var AjaxFormComponent = {
   methods: {
     handleAjaxFormSubmit : function()
     {
+      let formData = new FormData(event.target);
+      formData.forEach((key, value) => console.log(value, key));
         console.log('ddd');
         this.bbb();
     },
